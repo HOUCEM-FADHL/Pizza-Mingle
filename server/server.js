@@ -27,5 +27,8 @@ app.use(cookieParser());
 const AllMyUserRoutes = require("./routes/user.routes");
 AllMyUserRoutes(app);
 
+const AllMyPizzaRoutes = require("./routes/pizza.routes");
+AllMyPizzaRoutes(app);
+
 // Start the server and listen on the specified port
 app.listen(port, () => console.log(`The server is all fired up on port: ${port}`));

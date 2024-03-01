@@ -47,6 +47,28 @@ module.exports = {
         } catch (err) {
             res.status(500).json({ error: err });
         }
+    },
+
+    getLoggedInUser: async (req, res) => {
+        const id = req.params.id
+        try{
+            const user = await User.findById(id)
+            res.status(200).json(user)
+        }
+        catch(err){
+            res.status(500).json({error: err})
+        }
+    },
+
+    updateUser: async (req, res) => {
+        const id = req.params.id
+        try{
+            const user = await User.findByIdAndUpdate(id, req.body, {new: true})
+            res.status(200).json(user)
+        }
+        catch(err){
+            res.status(500).json({error: err})
+        }
     }
 
 };

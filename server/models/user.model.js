@@ -15,6 +15,19 @@ const UserSchema = new mongoose.Schema(
         type: String,
         required: [true, "Last name is required"],
         },
+        address: {
+            type: String,
+            required: [true, "Adress is required"],
+        },
+        city: {
+            type: String,
+            required: [true, "City is required"],
+        },
+        state : {
+            type: String,
+            enum : ["State 1", "State 2"],
+            required: [true, "State is required"],
+        },
         email: {
         type: String,
         required: [true, "Email is required"],

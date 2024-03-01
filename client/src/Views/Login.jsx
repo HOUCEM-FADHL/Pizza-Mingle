@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Form, Button } from "react-bootstrap";
+import { Form, Button, Row } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import NavComponent from "../Components/NavComponent";
 
@@ -61,9 +61,11 @@ const Login = () => {
                 value={userLogin.password}
             />
             </Form.Group>
+            <Row className="mt-3 mx-auto w-25">
             <Button className="mb-3" variant="warning" type="submit">
             Login
             </Button>
+            </Row>
             {error.message && <p className="text-danger">{error.message}</p>}
         </form>
             <Link to="/register">
