@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
+import NavComponent from "../Components/NavComponent";
 
 import axios from "axios";
 
@@ -35,8 +36,10 @@ const Login = () => {
     };
 
     return (
-        <div className="container w-50 mx-auto">
-        <h1 className="text-center">Login</h1>
+        <div>
+        <NavComponent home={true} />
+        <div className="container w-50 mx-auto bg-light rounded p-3">
+        <h1 className="text-center">Welcome Back</h1>
         <form onSubmit={handleSubmit}>
             <Form.Group className="mb-3">
             <Form.Label>Email address:</Form.Label>
@@ -58,15 +61,16 @@ const Login = () => {
                 value={userLogin.password}
             />
             </Form.Group>
-            <Button className="mb-3" variant="primary" type="submit">
+            <Button className="mb-3" variant="warning" type="submit">
             Login
             </Button>
             {error.message && <p className="text-danger">{error.message}</p>}
         </form>
-            <Link to="/">
+            <Link to="/register">
             {" "}
             Don't have an Account. Register here
             </Link>
+        </div>
         </div>
     );
 };

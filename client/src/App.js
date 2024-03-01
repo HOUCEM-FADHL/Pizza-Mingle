@@ -1,16 +1,15 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Routes, Route} from "react-router-dom";
-import Register from "./Components/Register";
-import Login from './Components/Login';
-import Homepage from './Components/Homepage';
+import Register from "./Views/Register";
+import Login from './Views/Login';
+import Homepage from './Views/Homepage';
 
 function App() {
   return (
-    <div>
-      {/* <h1 className='text-center mb-3'>Login and Register</h1> */}
+    <div className=" min-vh-100 pb-5" style={{ backgroundColor: "#FFC371" }}>
       <Routes>
-        <Route path="/" element={<Register />} />
-        <Route path='/login' element={<Login />}/>
+        <Route path="/register" element={<Register />} />
+        <Route path='/' element={<Login />}/>
         <Route path='/homepage' element={<Homepage/>} />
       </Routes>
     </div>

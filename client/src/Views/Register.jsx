@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { Form, Button } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
+import NavComponent from "../Components/NavComponent";
 
 
 const Register = () => {
@@ -33,7 +34,9 @@ const Register = () => {
         });
     };
     return (
-        <div className="container w-50 mx-auto">
+        <div>
+        <NavComponent home={true} />
+        <div className="container w-50 mx-auto bg-light rounded p-3">
         <h1 className="text-center">Register</h1>
         <form onSubmit={handleSubmit}>
             <Form.Group className="mb-3">
@@ -86,10 +89,11 @@ const Register = () => {
                 />
                 {/* {error.confirmPassword && <p className="text-danger">{error.confirmPassword.message}</p>} */}
             </Form.Group>
-            <Button className="mb-3" type="submit">Register</Button>
+            <Button className="mb-3" variant="warning" type="submit">Register</Button>
             {error.message && <p className="text-danger">{error.message}</p>}
         </form>
-        <Link to="/login">Already have an account? Login</Link>
+        <Link to="/">Already have an account? Login</Link>
+        </div>
         </div>
     );
 };
