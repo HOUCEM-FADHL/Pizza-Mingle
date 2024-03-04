@@ -7,6 +7,7 @@ import Account from './Views/Account';
 import Order from './Views/Order';
 import Craft from './Components/Craft';
 import Favorite from './Components/Favorite';
+import Random from './Components/Random';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path="/order" element={<Order/>} />
         <Route path="/craft" element={<Craft/>} />
         <Route path="/favorite" element={<Favorite/>} />
+        <Route path="/random" element={<Random/>} />
       </Routes>
     </div>
   );

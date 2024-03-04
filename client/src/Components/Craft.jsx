@@ -13,6 +13,7 @@ const Craft = () => {
     const [toppings, setToppings] = useState([]);
     const idx = window.localStorage.getItem("userId");
     const { user, setUser } = useContext(UserContext);
+    const [error, setError] = useState({});
 
 
 
@@ -49,12 +50,8 @@ const Craft = () => {
             setCrust("");
             setQuantity(0);
             setToppings([]);
-          })
-         .catch((err) => {
-            console.log(err);
-          });
-
-        axios
+            setError({});
+            axios
            .patch(`http://localhost:8000/api/updateUser/${idx}`, {orderNum: user.orderNum + 1}, {
         withCredentials: true,
       })
@@ -65,6 +62,13 @@ const Craft = () => {
       .catch((err) => {
         console.log(err);
       })
+          })
+         .catch((err) => {
+            console.log(err);
+            setError(err.response.data.errors);
+          });
+
+        
 
     }
 
@@ -85,6 +89,9 @@ const Craft = () => {
               <option value="Delivery">Delivery</option>
               <option value="DineIn">DineIn</option>
             </Form.Select>
+            {error.method ? (
+            <p className="text-danger">{error.method.message}</p>
+            ) : null}
           </Form.Group>
           <Row className="mb-3">
             <Form.Group as={Col}>
@@ -98,6 +105,9 @@ const Craft = () => {
                 <option value="Medium">Medium</option>
                 <option value="Large">Large</option>
               </Form.Select>
+              {error.size ? (
+                <p className="text-danger">{error.size.message}</p>
+                ) : null}
             </Form.Group>
             <Form.Group as={Col}>
               <Form.Label>Crust</Form.Label>
@@ -110,6 +120,9 @@ const Craft = () => {
                 <option value="Regular">Regular</option>
                 <option value="Thick">Thick</option>
               </Form.Select>
+              {error.crust ? (
+                <p className="text-danger">{error.crust.message}</p>
+                ) : null}
             </Form.Group>
             <Form.Group as={Col}>
               <Form.Label>Quantity</Form.Label>
@@ -118,6 +131,9 @@ const Craft = () => {
                 value={quantity}
                 onChange={(e) => setQuantity(e.target.value)}
               />
+              {error.quantity ? (
+                <p className="text-danger">{error.quantity.message}</p>
+                ) : null}
             </Form.Group>
           </Row>
             <label>Toppings</label>
@@ -182,6 +198,9 @@ const Craft = () => {
                 />
               </Col>
             </Row>
+            {error.toppings ? (
+              <p className="text-danger">{error.toppings.message}</p>
+              ) : null}
           </Container>
           <Row className="mx-auto w-25">
           <Button className="mb-3" variant="warning" type="submit">

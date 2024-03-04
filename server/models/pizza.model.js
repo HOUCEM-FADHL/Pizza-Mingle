@@ -5,22 +5,52 @@ const PizzaSchema = new mongoose.Schema(
     method: {
       type: String,
       enum: ["CarryOut", "Delivery", "DineIn"],
+      validate: {
+        validator: function (value) {
+          return value !== "Choose..."; // Customize this condition as needed
+        },
+        message: "Method is required.",
+      },
+      required: [true, "Method is required."],
     },
     size: {
       type: String,
       enum: ["Small", "Medium", "Large"],
+      validate: {
+        validator: function (value) {
+          return value !== "Choose..."; // Customize this condition as needed
+        },
+        message: "Method is required.",
+      },
+      required: [true, "Size is required."],
     },
     crust: {
       type: String,
       enum: ["Thin", "Regular", "Thick"],
+      validate: {
+        validator: function (value) {
+          return value !== "Choose..."; // Customize this condition as needed
+        },
+        message: "Method is required.",
+      },
+      required: [true, "Crust is required."],
     },
     toppings: {
       type: Array,
+      validate: [
+        {
+          validator: function (value) {
+            return value.length > 0;
+          },
+          message: "At least one topping is required.",
+        },
+      ],
       default: [],
     },
     quantity: {
       type: Number,
       default: 1,
+      min: [1, "Quantity must be at least 1."],
     },
     fav : {
       type: Boolean,

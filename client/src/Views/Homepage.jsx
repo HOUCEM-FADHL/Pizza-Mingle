@@ -57,7 +57,7 @@ const Homepage = () => {
               </Card.Text>
             </Card.Body>
               <Card.Footer className="bg-transparent border-0" >
-              <Button variant="warning" onClick={() => navigate("/surprise")}>
+              <Button variant="warning" onClick={() => navigate("/random")}>
                 Surprise Me
               </Button>
               </Card.Footer>
