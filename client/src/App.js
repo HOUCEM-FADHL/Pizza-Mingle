@@ -5,6 +5,7 @@ import Login from './Views/Login';
 import Homepage from './Views/Homepage';
 import Account from './Views/Account';
 import Order from './Views/Order';
+import Craft from './Components/Craft';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path='/homepage' element={<Homepage/>} />
         <Route path='/account' element={<Account />} />
         <Route path="/order" element={<Order/>} />
+        <Route path="/craft" element={<Craft/>} />
       </Routes>
     </div>
   );

@@ -11,10 +11,10 @@ const Homepage = () => {
   return (
     <div>
       <NavComponent home={false} />
-      <div className="container w-50 mx-auto text-center">
+      <div className="container mx-auto text-center">
         <h1 className="mb-5">Quick Options</h1>
-        <div className="d-flex justify-content-center gap-3 container mx-auto w-auto">
-          <Card style={{ width: "100rem" }}>
+        <div className="d-flex justify-content-center gap-3 container w-75">
+          <Card >
             <Card.Img variant="top" src={pizza1} />
             <Card.Body>
               <Card.Title>Craft Your Pizza</Card.Title>
@@ -23,12 +23,14 @@ const Homepage = () => {
                 Choose from a variety of crusts, sizes, and delicious toppings
                 to satisfy your cravings.
               </Card.Text>
-              <Button variant="warning" onClick={() => navigate("/order")}>
+            </Card.Body>
+              <Card.Footer className="bg-transparent border-0">
+              <Button variant="warning" onClick={() => navigate("/craft")}>
                 New Order
               </Button>
-            </Card.Body>
+              </Card.Footer>
           </Card>
-          <Card style={{ width: "100rem" }}>
+          <Card >
             <Card.Img variant="top" src={Mingle3} />
             <Card.Body>
               <Card.Title>Your Favorite</Card.Title>
@@ -37,12 +39,14 @@ const Homepage = () => {
                 option. We'll ensure your go-to combination is delivered to you
                 with just a click.
               </Card.Text>
-              <Button variant="warning" onClick={() => navigate("/order")}>
+            </Card.Body>
+              <Card.Footer className="bg-transparent border-0" >
+              <Button variant="warning" onClick={() => navigate("/craft")}>
                 Re-Order My Fav
               </Button>
-            </Card.Body>
+              </Card.Footer>
           </Card>
-          <Card style={{ width: "100rem" }}>
+          <Card >
             <Card.Img variant="top" src={pizzaSurprise} />
             <Card.Body>
               <Card.Title>Mingle Surprise</Card.Title>
@@ -51,10 +55,12 @@ const Homepage = () => {
                 Let our chefs create a unique and delicious pizza for you.
                 Embrace the surprise!
               </Card.Text>
-              <Button variant="warning" onClick={() => navigate("/order")}>
+            </Card.Body>
+              <Card.Footer className="bg-transparent border-0" >
+              <Button variant="warning" onClick={() => navigate("/craft")}>
                 Surprise Me
               </Button>
-            </Card.Body>
+              </Card.Footer>
           </Card>
         </div>
       </div>

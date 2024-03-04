@@ -4,6 +4,7 @@ import { UserContext } from "../Context/UserContext";
 import { Form, Button, Col, Row } from "react-bootstrap";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import LastOrders from "../Components/LastOrders";
 
 const Account = () => {
   const { user, setUser } = useContext(UserContext);
@@ -122,6 +123,7 @@ const Account = () => {
         </div>
         <div className="container w-50 mx-auto bg-light rounded p-3">
           <h1>Past Orders</h1>
+          <LastOrders />
         </div>
       </div>
     </div>
