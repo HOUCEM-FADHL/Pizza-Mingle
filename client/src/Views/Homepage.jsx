@@ -41,7 +41,7 @@ const Homepage = () => {
               </Card.Text>
             </Card.Body>
               <Card.Footer className="bg-transparent border-0" >
-              <Button variant="warning" onClick={() => navigate("/craft")}>
+              <Button variant="warning" onClick={() => navigate("/favorite")}>
                 Re-Order My Fav
               </Button>
               </Card.Footer>
@@ -57,7 +57,7 @@ const Homepage = () => {
               </Card.Text>
             </Card.Body>
               <Card.Footer className="bg-transparent border-0" >
-              <Button variant="warning" onClick={() => navigate("/craft")}>
+              <Button variant="warning" onClick={() => navigate("/surprise")}>
                 Surprise Me
               </Button>
               </Card.Footer>
