@@ -29,7 +29,7 @@ const PizzaSchema = new mongoose.Schema(
       enum: ["Thin", "Regular", "Thick"],
       validate: {
         validator: function (value) {
-          return value !== "Choose..."; // Customize this condition as needed
+          return value !== "Choose..."; 
         },
         message: "Method is required.",
       },
