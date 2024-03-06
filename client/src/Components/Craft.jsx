@@ -19,8 +19,10 @@ const Craft = () => {
 
     const addTopping = (e,topping) => {
         if(e.target.checked){
+          // If the checkbox is checked, add the topping to the toppings array
             setToppings([...toppings,topping]);
         }else{
+          // If the checkbox is unchecked, remove the topping from the toppings array
             setToppings(toppings.filter(item => item !== topping));
         }
     };
