@@ -15,7 +15,7 @@ const Register = () => {
     password: "",
     confirmPassword: ""
   });
-  const [error, setError] = useState({});
+  const [error, setError] = useState([]);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -23,19 +23,26 @@ const Register = () => {
   };
 
   const handleSubmit = (e) => {
+    console.log("user",user);
     e.preventDefault();
     axios
-      .post("http://localhost:8000/api/registerUser", user, {
-        withCredentials: true,
-      })
+      .post("http://localhost:8000/api/registerUser", user,
+      {
+        withCredentials: true
+      }
+      )
       .then((res) => {
         console.log("register-res", res.data);
         window.localStorage.setItem("userId", res.data._id);
         navigate("/homepage");
+        setError([]);
       })
       .catch((err) => {
-        console.log("registerErr:", err);
-        setError(err.response.data);
+        console.log("registerErr:", err.response.data);
+        if (err.response.data.message){ setError(err.response.data)}
+        else if (err.response.data.error.errors){ setError(err.response.data.error.errors)}
+        else setError([])
+        
       });
   };
   return (
@@ -53,7 +60,7 @@ const Register = () => {
                 onChange={handleChange}
                 value={user.firstName}
               />
-              {/* {error.firstName && <p className="text-danger">{error.firstName.message}</p>} */}
+              {error.firstName && <p className="text-danger">{error.firstName.message}</p>}
             </Form.Group>
             <Form.Group as={Col}>
               <Form.Label>Last Name:</Form.Label>
@@ -63,7 +70,7 @@ const Register = () => {
                 onChange={handleChange}
                 value={user.lastName}
               />
-              {/* {error.lastName && <p className="text-danger">{error.lastName.message}</p>} */}
+              {error.lastName && <p className="text-danger">{error.lastName.message}</p>}
             </Form.Group>
           </Row>
           <Form.Group className="mb-3">
@@ -74,7 +81,7 @@ const Register = () => {
               onChange={handleChange}
               value={user.email}
             />
-            {/* {error.email && <p className="text-danger">{error.email.message}</p>} */}
+            {error && <p className="text-danger">{error.message}</p>}
           </Form.Group>
           <Form.Group className="mb-3">
             <Form.Label>Address:</Form.Label>
@@ -84,7 +91,7 @@ const Register = () => {
               onChange={handleChange}
               value={user.address}
             />
-            {/* {error.firstName && <p className="text-danger">{error.firstName.message}</p>} */}
+            {error.address && <p className="text-danger">{error.address.message}</p>}
           </Form.Group>
           <Row className="mb-3">
             <Form.Group as={Col} controlId="formGridCity">
@@ -95,6 +102,7 @@ const Register = () => {
                 onChange={handleChange}
                 value={user.city}
               />
+              {error.city && <p className="text-danger">{error.city.message}</p>}
             </Form.Group>
             <Form.Group as={Col} controlId="formGridState">
               <Form.Label>State</Form.Label>
@@ -107,6 +115,7 @@ const Register = () => {
                 <option value="State 1">State 1</option>
                 <option value="State 2">State 2</option>
               </Form.Select>
+              {error.state && <p className="text-danger">{error.state.message}</p>}
             </Form.Group>
           </Row>
           <Form.Group className="mb-3">
@@ -117,7 +126,7 @@ const Register = () => {
               onChange={handleChange}
               value={user.password}
             />
-            {/* {error.password && <p className="text-danger">{error.password.message}</p>} */}
+            {error.password && <p className="text-danger">{error.password.message}</p>}
           </Form.Group>
           <Form.Group className="mb-3">
             <Form.Label>Confirm Password:</Form.Label>
@@ -127,14 +136,13 @@ const Register = () => {
               onChange={handleChange}
               value={user.confirmPassword}
             />
-            {/* {error.confirmPassword && <p className="text-danger">{error.confirmPassword.message}</p>} */}
+            {error.confirmPassword && <p className="text-danger">{error.confirmPassword.message}</p>}
           </Form.Group>
           <Row className="mt-3 mx-auto w-25">
           <Button className="mb-3" variant="warning" type="submit">
             Register
           </Button>
           </Row >
-          {error.message && <p className="text-danger">{error.message}</p>}
         </form>
         <Link to="/">Already have an account? Login</Link>
       </div>

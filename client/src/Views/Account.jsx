@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import NavComponent from "../Components/NavComponent";
 import { UserContext } from "../Context/UserContext";
 import { Form, Button, Col, Row } from "react-bootstrap";
@@ -10,6 +10,7 @@ const Account = () => {
   const { user, setUser } = useContext(UserContext);
   const navigate = useNavigate();
   const idx = window.localStorage.getItem("userId");
+  const [error, setError] = useState({});
   useEffect(() => {
     axios
       .get(`http://localhost:8000/api/loggedInUser/${idx}`, {
@@ -35,11 +36,11 @@ const Account = () => {
       .then((res) => {
         console.log("updated data: ", res.data);
         navigate("/homepage");
-        // setError({});
+        setError({});
       })
       .catch((err) => {
         console.log(err);
-        // setError(err.response.data.errors);
+        setError(err.response.data.error.errors);
       });
   };
   return (
@@ -58,7 +59,7 @@ const Account = () => {
                   onChange={handleChange}
                   value={user.firstName}
                 />
-                {/* {error.firstName && <p className="text-danger">{error.firstName.message}</p>} */}
+                {error.firstName && <p className="text-danger">{error.firstName.message}</p>}
               </Form.Group>
               <Form.Group as={Col}>
                 <Form.Label>Last Name:</Form.Label>
@@ -68,7 +69,7 @@ const Account = () => {
                   onChange={handleChange}
                   value={user.lastName}
                 />
-                {/* {error.lastName && <p className="text-danger">{error.lastName.message}</p>} */}
+                {error.lastName && <p className="text-danger">{error.lastName.message}</p>}
               </Form.Group>
             </Row>
             <Form.Group className="mb-3">
@@ -79,7 +80,7 @@ const Account = () => {
                 onChange={handleChange}
                 value={user.email}
               />
-              {/* {error.email && <p className="text-danger">{error.email.message}</p>} */}
+              {error.email && <p className="text-danger">{error.email.message}</p>}
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label>Address:</Form.Label>
@@ -89,7 +90,7 @@ const Account = () => {
                 onChange={handleChange}
                 value={user.address}
               />
-              {/* {error.firstName && <p className="text-danger">{error.firstName.message}</p>} */}
+              {error.firstName && <p className="text-danger">{error.firstName.message}</p>}
             </Form.Group>
             <Row className="mb-3">
               <Form.Group as={Col} controlId="formGridCity">
@@ -112,6 +113,7 @@ const Account = () => {
                   <option value="State 1">State 1</option>
                   <option value="State 2">State 2</option>
                 </Form.Select>
+                {error.state && <p className="text-danger">{error.state.message}</p>}
               </Form.Group>
             </Row>
             <Row className="mt-3 mx-auto w-25">

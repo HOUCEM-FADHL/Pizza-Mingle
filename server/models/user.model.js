@@ -47,26 +47,28 @@ const UserSchema = new mongoose.Schema(
     { timestamps: true }
     );
 
-    UserSchema.virtual("confirmPassword")
-    .get(() => this._confirmPassword)
-    .set((value) => {
-        this._confirmPassword = value;
-    });
+ 
 
-    UserSchema.pre("validate", function (next) {
-    if (this.password !== this.confirmPassword) {
-        this.invalidate("confirmPassword", "Passwords do not match");
-    } else {
-        next();
+        UserSchema.virtual("confirmPassword")
+        .get(() => this.confirmPassword)
+        .set((value) => {this.confirmPassword = value;});
+    
+UserSchema.pre('validate', function(next){
+    if(this.password !== this.confirmPassword){
+        this.invalidate('confirmPassword', 'Passwords dont match')
     }
-    });
+    next();
+})
 
-    UserSchema.pre("save", function (next) {
-    bcrypt.hash(this.password, 10).then((hash) => {
-        this.password = hash;
-        next();
-    });
+// this should go after 
+UserSchema.pre('save', function (next) {
+    bcrypt.hash(this.password, 10)
+        .then(hash => {
+            this.password = hash;
+            next();
+        });
 });
+
 
 // Create the User model using the defined schema
 const User = mongoose.model("User", UserSchema);

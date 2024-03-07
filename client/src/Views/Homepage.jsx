@@ -4,13 +4,17 @@ import pizza1 from "../Assets/pizza1.jpeg";
 import pizzaSurprise from "../Assets/pizza-surprise.jpeg";
 import Mingle3 from "../Assets/Mingle3.jpeg";
 import NavComponent from "../Components/NavComponent";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+
+
 
 const Homepage = () => {
   const navigate = useNavigate();
+  const idx = window.localStorage.getItem("userId");
   return (
     <div>
       <NavComponent home={false} />
+      {idx? (
       <div className="container mx-auto text-center">
         <h1 className="mb-5">Quick Options</h1>
         <div className="d-flex justify-content-center gap-3 container w-75">
@@ -64,7 +68,13 @@ const Homepage = () => {
           </Card>
         </div>
       </div>
+      ) : (
+        <div className="container mx-auto text-center">
+          <p>you are not logged in. <Link to= {"/"}>logged IN Here</Link></p>
+        </div>
+  )
+}
     </div>
-  );
-};
+)
+}
 export default Homepage;

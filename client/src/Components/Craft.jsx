@@ -16,7 +16,6 @@ const Craft = () => {
     const [error, setError] = useState({});
 
 
-
     const addTopping = (e,topping) => {
         if(e.target.checked){
           // If the checkbox is checked, add the topping to the toppings array
