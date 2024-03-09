@@ -1,3 +1,4 @@
+// Importing React, useState, useEffect, and other dependencies
 import React, { useState, useEffect } from "react";
 import NavComponent from "./NavComponent";
 import axios from "axios";
@@ -5,7 +6,9 @@ import { Form, Row, Col, Container, Button, Alert } from "react-bootstrap";
 import { useContext } from "react";
 import { UserContext } from "../Context/UserContext";
 
+// Favorite component for managing favorite pizza orders
 const Favorite = () => {
+  // State variables to manage favorite pizza orders, form inputs, errors, and notifications
   const [orders, setOrders] = useState([]);
   const idx = window.localStorage.getItem("userId");
   const [method, setMethod] = useState("");
@@ -14,10 +17,10 @@ const Favorite = () => {
   const [quantity, setQuantity] = useState(1);
   const [toppings, setToppings] = useState([]);
   const { user, setUser } = useContext(UserContext);
-  const [orderId, setOrderId] = useState("");
   const [error, setError] = useState({});
   const [showNotification, setShowNotification] = useState(false);
 
+  // useEffect to fetch favorite pizza orders when the component mounts
   useEffect(() => {
     axios
       .get(`http://localhost:8000/api/pizzas/${idx}`, {
@@ -29,6 +32,8 @@ const Favorite = () => {
       })
       .catch((err) => console.log(err));
   }, []);
+
+  // Function to add or remove toppings based on checkbox status
   const addTopping = (e, topping) => {
     if (e.target.checked) {
       setToppings([...toppings, topping]);
@@ -36,9 +41,10 @@ const Favorite = () => {
       setToppings(toppings.filter((item) => item !== topping));
     }
   };
+
+  // Function to fetch details of a selected favorite pizza order
   const submitHandler = (e, orderId) => {
     e.preventDefault();
-    setOrderId(orderId);
     axios
       .get(`http://localhost:8000/api/getOnePizza/${orderId}`, {
         withCredentials: true,
@@ -51,9 +57,10 @@ const Favorite = () => {
         setQuantity(res.data.quantity);
         setToppings(res.data.toppings);
       })
-
       .catch((err) => console.log(err));
   };
+
+  // Function to handle the submission of a new pizza order
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("toppings", toppings);
@@ -62,6 +69,7 @@ const Favorite = () => {
     console.log("crust", crust);
     console.log("quantity", quantity);
 
+    // Make a POST request to create a new pizza order
     axios
       .post(
         `http://localhost:8000/api/createPizza`,
@@ -79,12 +87,16 @@ const Favorite = () => {
       )
       .then((res) => {
         console.log(res.data);
+
+        // Reset form values and errors
         setMethod("");
         setSize("");
         setCrust("");
         setQuantity(0);
         setToppings([]);
         setError({});
+
+        // Update user order count
         axios
           .patch(
             `http://localhost:8000/api/updateUser/${idx}`,
@@ -95,11 +107,15 @@ const Favorite = () => {
           )
           .then((res) => {
             console.log("user updated", res.data);
+
+            // Update user context
             setUser(res.data);
+
+            // Show success notification for 3 seconds
             setShowNotification(true);
-        setTimeout(() => {
-          setShowNotification(false);
-        }, 3000);
+            setTimeout(() => {
+              setShowNotification(false);
+            }, 3000);
           })
           .catch((err) => {
             console.log(err);
@@ -107,37 +123,46 @@ const Favorite = () => {
       })
       .catch((err) => {
         console.log(err);
+
+        // Handle validation errors and update the state
         setError(err.response.data.errors);
       });
   };
 
+  // Rendering the Favorite component
   return (
     <div>
+      {/* Render the navigation component */}
       <NavComponent home={false} />
-        {/* Display the notification box only when showNotification is true */}
-        {showNotification && (
-          <div
-            style={{
-              position: "fixed",
-              bottom: "20px",
-              right: "20px",
-              zIndex: "9999", // Adjust z-index to ensure it's above other elements
-            }}
+
+      {/* Display the notification box only when showNotification is true */}
+      {showNotification && (
+        <div
+          style={{
+            position: "fixed",
+            bottom: "20px",
+            right: "20px",
+            zIndex: "9999", // Adjust z-index to ensure it's above other elements
+          }}
+        >
+          <Alert
+            variant="success"
+            onClose={() => setShowNotification(false)}
+            dismissible
           >
-            <Alert
-              variant="success"
-              onClose={() => setShowNotification(false)}
-              dismissible
-            >
-              Order added successfully!
-            </Alert>
-             
-          </div>
-        )}
+            Order added successfully!
+          </Alert>
+           
+        </div>
+      )}
+
+      {/* Main content container for the Favorite component */}
       <div className="d-flex justify-content-center gap-3 container mx-auto w-auto">
+        {/* Form to create a new pizza order */}
         <div className="container w-50 mx-auto bg-light rounded p-3">
           <h1 className="text-center">Craft Your Favorite</h1>
           <form onSubmit={handleSubmit}>
+            {/* Form fields for selecting pizza details */}
             <Form.Group className="mb-3">
               <Form.Label>Method</Form.Label>
               <Form.Select
@@ -150,8 +175,8 @@ const Favorite = () => {
                 <option value="DineIn">DineIn</option>
               </Form.Select>
               {error.method ? (
-            <p className="text-danger">{error.method.message}</p>
-            ) : null}
+                <p className="text-danger">{error.method.message}</p>
+              ) : null}
             </Form.Group>
             <Row className="mb-3">
               <Form.Group as={Col}>
@@ -167,7 +192,7 @@ const Favorite = () => {
                 </Form.Select>
                 {error.size ? (
                   <p className="text-danger">{error.size.message}</p>
-                  ) : null}
+                ) : null}
               </Form.Group>
               <Form.Group as={Col}>
                 <Form.Label>Crust</Form.Label>
@@ -182,7 +207,7 @@ const Favorite = () => {
                 </Form.Select>
                 {error.crust ? (
                   <p className="text-danger">{error.crust.message}</p>
-                  ) : null}
+                ) : null}
               </Form.Group>
               <Form.Group as={Col}>
                 <Form.Label>Quantity</Form.Label>
@@ -193,9 +218,11 @@ const Favorite = () => {
                 />
                 {error.quantity ? (
                   <p className="text-danger">{error.quantity.message}</p>
-                  ) : null}
+                ) : null}
               </Form.Group>
             </Row>
+
+            {/* Checkboxes for selecting pizza toppings */}
             <label>Toppings</label>
             <Container className="p-3 mb-3">
               <Row>
@@ -276,10 +303,14 @@ const Favorite = () => {
                   />
                 </Col>
               </Row>
+
+              {/* Display error message for toppings */}
               {error.toppings ? (
-              <p className="text-danger">{error.toppings.message}</p>
+                <p className="text-danger">{error.toppings.message}</p>
               ) : null}
             </Container>
+
+            {/* Button to submit the pizza order */}
             <Row className="mx-auto w-25">
               <Button className="mb-3" variant="warning" type="submit">
                 Add To Order
@@ -287,6 +318,8 @@ const Favorite = () => {
             </Row>
           </form>
         </div>
+
+        {/* Display user's favorite pizza orders */}
         <div className="container w-50 mx-auto bg-light rounded p-3">
           <h1 className="text-center">Your Favorites</h1>
           {orders.map((order) => (
@@ -307,9 +340,10 @@ const Favorite = () => {
               <p>
                 Price:{" "}
                 <span className="fw-bold" style={{ color: "#ff5a5e" }}>
-                ${parseFloat(
-                  (order.totalPrice + order.totalPrice * 0.19).toFixed(2)
-                )}
+                  $
+                  {parseFloat(
+                    (order.totalPrice + order.totalPrice * 0.19).toFixed(2)
+                  )}
                 </span>
               </p>
             </div>
@@ -320,4 +354,5 @@ const Favorite = () => {
   );
 };
 
+// Export the Favorite component as the default export
 export default Favorite;

@@ -1,24 +1,28 @@
+// Importing necessary React components, styles, and dependencies
 import React from "react";
 import { Button, Card } from "react-bootstrap";
 import pizza1 from "../Assets/pizza1.jpeg";
 import pizzaSurprise from "../Assets/pizza-surprise.jpeg";
 import Mingle3 from "../Assets/Mingle3.jpeg";
 import NavComponent from "../Components/NavComponent";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-
-
+// Homepage component for displaying quick options to the user
 const Homepage = () => {
+  // Accessing navigation functionality
   const navigate = useNavigate();
-  const idx = window.localStorage.getItem("userId");
+
+  // Rendering the Homepage component
   return (
     <div>
+      {/* Navigation component for header */}
       <NavComponent home={false} />
-      {idx? (
+      {/* Container for quick options */}
       <div className="container mx-auto text-center">
         <h1 className="mb-5">Quick Options</h1>
+        {/* Card layout for Craft Your Pizza option */}
         <div className="d-flex justify-content-center gap-3 container w-75">
-          <Card >
+          <Card>
             <Card.Img variant="top" src={pizza1} />
             <Card.Body>
               <Card.Title>Craft Your Pizza</Card.Title>
@@ -28,13 +32,15 @@ const Homepage = () => {
                 to satisfy your cravings.
               </Card.Text>
             </Card.Body>
-              <Card.Footer className="bg-transparent border-0">
+            <Card.Footer className="bg-transparent border-0">
+              {/* Button for navigating to Craft Your Pizza page */}
               <Button variant="warning" onClick={() => navigate("/craft")}>
                 New Order
               </Button>
-              </Card.Footer>
+            </Card.Footer>
           </Card>
-          <Card >
+          {/* Card layout for Your Favorite option */}
+          <Card>
             <Card.Img variant="top" src={Mingle3} />
             <Card.Body>
               <Card.Title>Your Favorite</Card.Title>
@@ -44,13 +50,15 @@ const Homepage = () => {
                 with just a click.
               </Card.Text>
             </Card.Body>
-              <Card.Footer className="bg-transparent border-0" >
+            <Card.Footer className="bg-transparent border-0">
+              {/* Button for navigating to Your Favorite page */}
               <Button variant="warning" onClick={() => navigate("/favorite")}>
                 Re-Order My Fav
               </Button>
-              </Card.Footer>
+            </Card.Footer>
           </Card>
-          <Card >
+          {/* Card layout for Mingle Surprise option */}
+          <Card>
             <Card.Img variant="top" src={pizzaSurprise} />
             <Card.Body>
               <Card.Title>Mingle Surprise</Card.Title>
@@ -60,21 +68,18 @@ const Homepage = () => {
                 Embrace the surprise!
               </Card.Text>
             </Card.Body>
-              <Card.Footer className="bg-transparent border-0" >
+            <Card.Footer className="bg-transparent border-0">
+              {/* Button for navigating to Mingle Surprise page */}
               <Button variant="warning" onClick={() => navigate("/random")}>
                 Surprise Me
               </Button>
-              </Card.Footer>
+            </Card.Footer>
           </Card>
         </div>
       </div>
-      ) : (
-        <div className="container mx-auto text-center">
-          <p>you are not logged in. <Link to= {"/"}>logged IN Here</Link></p>
-        </div>
-  )
-}
     </div>
-)
-}
+  );
+};
+
+// Export the Homepage component as the default export
 export default Homepage;

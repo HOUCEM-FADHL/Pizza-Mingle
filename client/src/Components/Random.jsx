@@ -1,17 +1,20 @@
+// Importing necessary React components, styles, and dependencies
 import React, { useState } from "react";
 import NavComponent from "../Components/NavComponent";
-import { Form, Row, Col, Container, Button,Alert } from "react-bootstrap";
+import { Form, Row, Col, Container, Button, Alert } from "react-bootstrap";
 import axios from "axios";
 import { useContext } from "react";
 import { UserContext } from "../Context/UserContext";
 
+// Random component for generating a random pizza order
 const Random = () => {
+  // State variables to store form data, errors, and user context
   const [method, setMethod] = useState("");
   const [size, setSize] = useState("");
   const [crust, setCrust] = useState("");
   const [quantity, setQuantity] = useState(1);
   const [toppings, setToppings] = useState([]);
-  const[error, setError] = useState({});
+  const [error, setError] = useState({});
   const idx = window.localStorage.getItem("userId");
   const { user, setUser } = useContext(UserContext);
   const [showNotification, setShowNotification] = useState(false);
@@ -53,6 +56,7 @@ const Random = () => {
     setToppings(randomToppings);
   };
 
+  // Function to handle adding/removing toppings
   const addTopping = (e, topping) => {
     if (e.target.checked) {
       setToppings([...toppings, topping]);
@@ -61,6 +65,7 @@ const Random = () => {
     }
   };
 
+  // Function to handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("toppings", toppings);
@@ -85,66 +90,69 @@ const Random = () => {
       )
       .then((res) => {
         console.log(res.data);
+        // Reset form values
         setMethod("");
         setSize("");
         setCrust("");
         setQuantity(0);
         setToppings([]);
         setError({});
+
+        // Update user's order count
         axios
-      .patch(
-        `http://localhost:8000/api/updateUser/${idx}`,
-        { orderNum: user.orderNum + 1 },
-        {
-          withCredentials: true,
-        }
-      )
-      .then((res) => {
-        console.log("user updated", res.data);
-        setUser(res.data);
-        setShowNotification(true);
-        setTimeout(() => {
-          setShowNotification(false);
-        }, 3000);
+          .patch(
+            `http://localhost:8000/api/updateUser/${idx}`,
+            { orderNum: user.orderNum + 1 },
+            {
+              withCredentials: true,
+            }
+          )
+          .then((res) => {
+            console.log("user updated", res.data);
+            setUser(res.data);
+            setShowNotification(true);
+            setTimeout(() => {
+              setShowNotification(false);
+            }, 3000);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       })
       .catch((err) => {
         console.log(err);
-      });
-    })
-    .catch((err) => {
-        console.log(err);
         setError(err.response.data.errors);
-    });
-};
+      });
+  };
 
-    
-
+  // Rendering the Random component
   return (
     <div>
       <NavComponent home={false} />
       {/* Display the notification box only when showNotification is true */}
       {showNotification && (
-          <div
-            style={{
-              position: "fixed",
-              bottom: "20px",
-              right: "20px",
-              zIndex: "9999", // Adjust z-index to ensure it's above other elements
-            }}
+        <div
+          style={{
+            position: "fixed",
+            bottom: "20px",
+            right: "20px",
+            zIndex: "9999",
+          }}
+        >
+          <Alert
+            variant="success"
+            onClose={() => setShowNotification(false)}
+            dismissible
           >
-            <Alert
-              variant="success"
-              onClose={() => setShowNotification(false)}
-              dismissible
-            >
-              Order added successfully!
-            </Alert>
-             
-          </div>
-        )}
+            Order added successfully!
+          </Alert>
+           
+        </div>
+      )}
       <div className="container w-50 mx-auto bg-light rounded p-3">
         <h1 className="text-center">Craft A Pizza</h1>
         <form onSubmit={handleSubmit}>
+          {/* Method selection */}
           <Form.Group className="mb-3">
             <Form.Label>Method</Form.Label>
             <Form.Select
@@ -157,9 +165,10 @@ const Random = () => {
               <option value="DineIn">DineIn</option>
             </Form.Select>
             {error.method ? (
-            <p className="text-danger">{error.method.message}</p>
+              <p className="text-danger">{error.method.message}</p>
             ) : null}
           </Form.Group>
+          {/* Size, Crust, and Quantity selection */}
           <Row className="mb-3">
             <Form.Group as={Col}>
               <Form.Label>Size</Form.Label>
@@ -174,7 +183,7 @@ const Random = () => {
               </Form.Select>
               {error.size ? (
                 <p className="text-danger">{error.size.message}</p>
-                ) : null}
+              ) : null}
             </Form.Group>
             <Form.Group as={Col}>
               <Form.Label>Crust</Form.Label>
@@ -189,7 +198,7 @@ const Random = () => {
               </Form.Select>
               {error.crust ? (
                 <p className="text-danger">{error.crust.message}</p>
-                ) : null}
+              ) : null}
             </Form.Group>
             <Form.Group as={Col}>
               <Form.Label>Quantity</Form.Label>
@@ -200,12 +209,14 @@ const Random = () => {
               />
               {error.quantity ? (
                 <p className="text-danger">{error.quantity.message}</p>
-                ) : null}
+              ) : null}
             </Form.Group>
           </Row>
+          {/* Toppings selection */}
           <label>Toppings</label>
           <Container className="p-3 mb-3">
             <Row>
+              {/* Individual topping checkboxes */}
               <Col xs={4}>
                 <Form.Check
                   type="checkbox"
@@ -285,19 +296,22 @@ const Random = () => {
             </Row>
             {error.toppings ? (
               <p className="text-danger">{error.toppings.message}</p>
-              ) : null}
+            ) : null}
           </Container>
+          {/* Buttons for random selection and form submission */}
           <div className="d-flex mt-3 mx-auto gap-2 justify-content-center">
             <Button
               className="mb-3 fw-bold text-light"
               variant="warning"
               type="button"
               onClick={generateRandomValues}
-              style={{background: "linear-gradient(to bottom, #ff5a5e, #FFCA2C)" }}
+              style={{
+                background: "linear-gradient(to bottom, #ff5a5e, #FFCA2C)",
+              }}
             >
               SURPRISE
             </Button>
-            <Button className="mb-3" variant="warning" type="submit" >
+            <Button className="mb-3" variant="warning" type="submit">
               Add To Order
             </Button>
           </div>
@@ -307,4 +321,5 @@ const Random = () => {
   );
 };
 
+// Export the Random component as the default export
 export default Random;
