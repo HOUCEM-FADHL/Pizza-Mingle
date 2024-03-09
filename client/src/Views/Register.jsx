@@ -13,8 +13,34 @@ const Register = () => {
     city: "",
     state: "",
     password: "",
-    confirmPassword: ""
+    confirmPassword: "",
   });
+  const tunisianStates = [
+    "Tunis",
+    "Ariana",
+    "Ben Arous",
+    "Manouba",
+    "Nabeul",
+    "Zaghouan",
+    "Bizerte",
+    "Béja",
+    "Jendouba",
+    "Kef",
+    "Siliana",
+    "Kairouan",
+    "Kasserine",
+    "Sidi Bouzid",
+    "Sousse",
+    "Mahdia",
+    "Monastir",
+    "Gabès",
+    "Médenine",
+    "Tataouine",
+    "Gafsa",
+    "Tozeur",
+    "Kebili",
+  ];
+
   const [error, setError] = useState([]);
   const navigate = useNavigate();
 
@@ -23,14 +49,12 @@ const Register = () => {
   };
 
   const handleSubmit = (e) => {
-    console.log("user",user);
+    console.log("user", user);
     e.preventDefault();
     axios
-      .post("http://localhost:8000/api/registerUser", user,
-      {
-        withCredentials: true
-      }
-      )
+      .post("http://localhost:8000/api/registerUser", user, {
+        withCredentials: true,
+      })
       .then((res) => {
         console.log("register-res", res.data);
         window.localStorage.setItem("userId", res.data._id);
@@ -39,10 +63,11 @@ const Register = () => {
       })
       .catch((err) => {
         console.log("registerErr:", err.response.data);
-        if (err.response.data.message){ setError(err.response.data)}
-        else if (err.response.data.error.errors){ setError(err.response.data.error.errors)}
-        else setError([])
-        
+        if (err.response.data.message) {
+          setError(err.response.data);
+        } else if (err.response.data.error.errors) {
+          setError(err.response.data.error.errors);
+        } else setError([]);
       });
   };
   return (
@@ -60,7 +85,9 @@ const Register = () => {
                 onChange={handleChange}
                 value={user.firstName}
               />
-              {error.firstName && <p className="text-danger">{error.firstName.message}</p>}
+              {error.firstName && (
+                <p className="text-danger">{error.firstName.message}</p>
+              )}
             </Form.Group>
             <Form.Group as={Col}>
               <Form.Label>Last Name:</Form.Label>
@@ -70,7 +97,9 @@ const Register = () => {
                 onChange={handleChange}
                 value={user.lastName}
               />
-              {error.lastName && <p className="text-danger">{error.lastName.message}</p>}
+              {error.lastName && (
+                <p className="text-danger">{error.lastName.message}</p>
+              )}
             </Form.Group>
           </Row>
           <Form.Group className="mb-3">
@@ -91,7 +120,9 @@ const Register = () => {
               onChange={handleChange}
               value={user.address}
             />
-            {error.address && <p className="text-danger">{error.address.message}</p>}
+            {error.address && (
+              <p className="text-danger">{error.address.message}</p>
+            )}
           </Form.Group>
           <Row className="mb-3">
             <Form.Group as={Col} controlId="formGridCity">
@@ -102,20 +133,30 @@ const Register = () => {
                 onChange={handleChange}
                 value={user.city}
               />
-              {error.city && <p className="text-danger">{error.city.message}</p>}
+              {error.city && (
+                <p className="text-danger">{error.city.message}</p>
+              )}
             </Form.Group>
             <Form.Group as={Col} controlId="formGridState">
               <Form.Label>State</Form.Label>
+
               <Form.Select
                 value={user.state}
                 name="state"
                 onChange={handleChange}
               >
                 <option>Choose...</option>
-                <option value="State 1">State 1</option>
-                <option value="State 2">State 2</option>
+
+                {tunisianStates.map((state, index) => (
+                  <option key={index} value={state}>
+                    {state}
+                  </option>
+                ))}
               </Form.Select>
-              {error.state && <p className="text-danger">{error.state.message}</p>}
+
+              {error.state && (
+                <p className="text-danger">{error.state.message}</p>
+              )}
             </Form.Group>
           </Row>
           <Form.Group className="mb-3">
@@ -126,7 +167,9 @@ const Register = () => {
               onChange={handleChange}
               value={user.password}
             />
-            {error.password && <p className="text-danger">{error.password.message}</p>}
+            {error.password && (
+              <p className="text-danger">{error.password.message}</p>
+            )}
           </Form.Group>
           <Form.Group className="mb-3">
             <Form.Label>Confirm Password:</Form.Label>
@@ -136,13 +179,15 @@ const Register = () => {
               onChange={handleChange}
               value={user.confirmPassword}
             />
-            {error.confirmPassword && <p className="text-danger">{error.confirmPassword.message}</p>}
+            {error.confirmPassword && (
+              <p className="text-danger">{error.confirmPassword.message}</p>
+            )}
           </Form.Group>
           <Row className="mt-3 mx-auto w-25">
-          <Button className="mb-3" variant="warning" type="submit">
-            Register
-          </Button>
-          </Row >
+            <Button className="mb-3" variant="warning" type="submit">
+              Register
+            </Button>
+          </Row>
         </form>
         <Link to="/">Already have an account? Login</Link>
       </div>

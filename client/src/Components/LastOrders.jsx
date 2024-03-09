@@ -1,6 +1,7 @@
 import React,{useState, useEffect} from 'react'
 import axios from 'axios';
 import { Form } from 'react-bootstrap';
+import { RiDeleteBin5Line } from "react-icons/ri";
 
 const LastOrders = () => {
     const [orders, setOrders] = useState([]);
@@ -10,8 +11,9 @@ const LastOrders = () => {
             withCredentials: true,
           })
             .then(res => {
-                const filtOrders = res.data ;
-                setOrders(filtOrders.filter(order => order.pur === true));
+                const filterOrders = res.data ;
+                const sortedOrders = filterOrders.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+                setOrders(sortedOrders.filter(order => order.pur === true));
             })
             .catch(err => console.log(err))
     }, []);
@@ -28,6 +30,17 @@ const LastOrders = () => {
         
         .catch((err) => console.log(err));
     };
+    const deleteOrder = (e, orderId) => {
+      e.preventDefault();
+      axios
+        .delete(`http://localhost:8000/api/deletePizza/${orderId}`, {
+          withCredentials: true,
+        })
+        .then((res) => {
+          setOrders(orders.filter((order) => order._id !== orderId));
+        })
+        .catch((err) => console.log(err));
+    }
   return (
     <div>
         {orders.map(order => (
@@ -38,7 +51,12 @@ const LastOrders = () => {
                 </div>
                 <p>{order.quantity} Pizza, {order.size} size and {order.crust} crust </p>
                 <p>Toppings: {order.toppings.join(", ")}</p>
-                <p>Price: <span className='fw-bold' style={{color: "#ff5a5e"}}>${order.totalPrice}</span></p>
+                <p>Price: <span className='fw-bold' style={{color: "#ff5a5e"}}>${parseFloat(
+                  (order.totalPrice + order.totalPrice * 0.19).toFixed(2)
+                )}</span></p>
+                <span className='text-end' >
+                <RiDeleteBin5Line style={{cursor: "pointer"}} className='delete-icon' size="30" onClick={(e) => deleteOrder(e,order._id)}/>
+                </span>
             </div>
         ))}
     </div>

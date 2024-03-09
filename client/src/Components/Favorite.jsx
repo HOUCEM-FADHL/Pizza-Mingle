@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import NavComponent from "./NavComponent";
 import axios from "axios";
-import { Form, Row, Col, Container, Button } from "react-bootstrap";
+import { Form, Row, Col, Container, Button, Alert } from "react-bootstrap";
 import { useContext } from "react";
 import { UserContext } from "../Context/UserContext";
 
@@ -16,6 +16,7 @@ const Favorite = () => {
   const { user, setUser } = useContext(UserContext);
   const [orderId, setOrderId] = useState("");
   const [error, setError] = useState({});
+  const [showNotification, setShowNotification] = useState(false);
 
   useEffect(() => {
     axios
@@ -62,8 +63,8 @@ const Favorite = () => {
     console.log("quantity", quantity);
 
     axios
-      .patch(
-        `http://localhost:8000/api/updatePizza/${orderId}`,
+      .post(
+        `http://localhost:8000/api/createPizza`,
         {
           method: method,
           size: size,
@@ -95,6 +96,10 @@ const Favorite = () => {
           .then((res) => {
             console.log("user updated", res.data);
             setUser(res.data);
+            setShowNotification(true);
+        setTimeout(() => {
+          setShowNotification(false);
+        }, 3000);
           })
           .catch((err) => {
             console.log(err);
@@ -109,6 +114,26 @@ const Favorite = () => {
   return (
     <div>
       <NavComponent home={false} />
+        {/* Display the notification box only when showNotification is true */}
+        {showNotification && (
+          <div
+            style={{
+              position: "fixed",
+              bottom: "20px",
+              right: "20px",
+              zIndex: "9999", // Adjust z-index to ensure it's above other elements
+            }}
+          >
+            <Alert
+              variant="success"
+              onClose={() => setShowNotification(false)}
+              dismissible
+            >
+              Order added successfully!
+            </Alert>
+             
+          </div>
+        )}
       <div className="d-flex justify-content-center gap-3 container mx-auto w-auto">
         <div className="container w-50 mx-auto bg-light rounded p-3">
           <h1 className="text-center">Craft Your Favorite</h1>
@@ -282,7 +307,9 @@ const Favorite = () => {
               <p>
                 Price:{" "}
                 <span className="fw-bold" style={{ color: "#ff5a5e" }}>
-                  ${order.totalPrice}
+                ${parseFloat(
+                  (order.totalPrice + order.totalPrice * 0.19).toFixed(2)
+                )}
                 </span>
               </p>
             </div>

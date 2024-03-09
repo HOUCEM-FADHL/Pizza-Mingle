@@ -11,6 +11,11 @@ const Account = () => {
   const navigate = useNavigate();
   const idx = window.localStorage.getItem("userId");
   const [error, setError] = useState({});
+  const tunisianStates = [
+    "Tunis", "Ariana", "Ben Arous", "Manouba", "Nabeul", "Zaghouan", "Bizerte",
+    "Béja", "Jendouba", "Kef", "Siliana", "Kairouan", "Kasserine", "Sidi Bouzid",
+    "Sousse", "Mahdia", "Monastir", "Gabès", "Médenine", "Tataouine", "Gafsa", "Tozeur", "Kebili"
+];
   useEffect(() => {
     axios
       .get(`http://localhost:8000/api/loggedInUser/${idx}`, {
@@ -109,9 +114,11 @@ const Account = () => {
                   name="state"
                   onChange={handleChange}
                 >
-                  <option>Choose...</option>
-                  <option value="State 1">State 1</option>
-                  <option value="State 2">State 2</option>
+                   <option>Choose...</option>
+                   
+                   {tunisianStates.map((state, index) => (
+                       <option key={index} value={state}>{state}</option>
+                   ))}
                 </Form.Select>
                 {error.state && <p className="text-danger">{error.state.message}</p>}
               </Form.Group>

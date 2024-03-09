@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import NavComponent from "../Components/NavComponent";
-import { Form, Row, Col, Container, Button } from "react-bootstrap";
+import { Form, Row, Col, Container, Button,Alert } from "react-bootstrap";
 import axios from "axios";
 import { useContext } from "react";
 import { UserContext } from "../Context/UserContext";
@@ -14,6 +14,7 @@ const Random = () => {
   const[error, setError] = useState({});
   const idx = window.localStorage.getItem("userId");
   const { user, setUser } = useContext(UserContext);
+  const [showNotification, setShowNotification] = useState(false);
 
   // Function to get a random element from an array
   const getRandomItem = (array) => {
@@ -101,6 +102,10 @@ const Random = () => {
       .then((res) => {
         console.log("user updated", res.data);
         setUser(res.data);
+        setShowNotification(true);
+        setTimeout(() => {
+          setShowNotification(false);
+        }, 3000);
       })
       .catch((err) => {
         console.log(err);
@@ -117,6 +122,26 @@ const Random = () => {
   return (
     <div>
       <NavComponent home={false} />
+      {/* Display the notification box only when showNotification is true */}
+      {showNotification && (
+          <div
+            style={{
+              position: "fixed",
+              bottom: "20px",
+              right: "20px",
+              zIndex: "9999", // Adjust z-index to ensure it's above other elements
+            }}
+          >
+            <Alert
+              variant="success"
+              onClose={() => setShowNotification(false)}
+              dismissible
+            >
+              Order added successfully!
+            </Alert>
+             
+          </div>
+        )}
       <div className="container w-50 mx-auto bg-light rounded p-3">
         <h1 className="text-center">Craft A Pizza</h1>
         <form onSubmit={handleSubmit}>

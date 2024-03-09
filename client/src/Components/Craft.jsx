@@ -1,6 +1,6 @@
 import React, { useState} from "react";
 import NavComponent from "../Components/NavComponent";
-import { Form, Row, Col, Container, Button } from "react-bootstrap";
+import { Form, Row, Col, Container, Button, Alert } from "react-bootstrap";
 import axios from "axios";
 import { useContext } from "react";
 import { UserContext } from "../Context/UserContext";
@@ -14,7 +14,7 @@ const Craft = () => {
     const idx = window.localStorage.getItem("userId");
     const { user, setUser } = useContext(UserContext);
     const [error, setError] = useState({});
-
+    const [showNotification, setShowNotification] = useState(false);
 
     const addTopping = (e,topping) => {
         if(e.target.checked){
@@ -59,6 +59,10 @@ const Craft = () => {
       .then((res) => {
         console.log("user updated", res.data);
         setUser(res.data);
+        setShowNotification(true);
+        setTimeout(() => {
+          setShowNotification(false);
+        }, 3000);
       })
       .catch((err) => {
         console.log(err);
@@ -76,6 +80,26 @@ const Craft = () => {
   return (
     <div>
       <NavComponent home={false} />
+      {/* Display the notification box only when showNotification is true */}
+      {showNotification && (
+          <div
+            style={{
+              position: "fixed",
+              bottom: "20px",
+              right: "20px",
+              zIndex: "9999", // Adjust z-index to ensure it's above other elements
+            }}
+          >
+            <Alert
+              variant="success"
+              onClose={() => setShowNotification(false)}
+              dismissible
+            >
+              Order added successfully!
+            </Alert>
+             
+          </div>
+        )}
       <div className="container w-50 mx-auto bg-light rounded p-3">
         <h1 className="text-center">Craft A Pizza</h1>
         <form onSubmit={handleSubmit}>
@@ -144,18 +168,21 @@ const Craft = () => {
                 <Form.Check type="checkbox" label="Pepperoni" 
                 checked={toppings.includes("Pepperoni")} 
                 onChange={ (e)=> addTopping(e,"Pepperoni") }
+                id={`Pepperoni`}
                 />
               </Col>
               <Col xs={4}>
                 <Form.Check type="checkbox" label="Sausage"
                 checked={toppings.includes("Sausage")}
-                onChange={ (e)=> addTopping(e,"Sausage")}   
+                onChange={ (e)=> addTopping(e,"Sausage")} 
+                id={"Sausage"}  
                 />
               </Col>
               <Col xs={4}>
                 <Form.Check type="checkbox" label="Bacon" 
                 checked={toppings.includes("Bacon")}
-                onChange={ (e)=> addTopping(e,"Bacon")}                
+                onChange={ (e)=> addTopping(e,"Bacon")}
+                id={"Bacon"}              
                 />
               </Col>
             </Row>
@@ -163,19 +190,22 @@ const Craft = () => {
               <Col xs={4}>
                 <Form.Check type="checkbox" label="Mushrooms"
                 checked={toppings.includes("Mushrooms")}
-                onChange={ (e)=> addTopping(e,"Mushrooms")}                
+                onChange={ (e)=> addTopping(e,"Mushrooms")}   
+                id={"Mushrooms"}             
                 />
               </Col>
               <Col xs={4}>
                 <Form.Check type="checkbox" label="Onions"
                 checked={toppings.includes("Onions")}
                 onChange={ (e)=> addTopping(e,"Onions")}
+                id={"Onions"}
                 />
               </Col>
               <Col xs={4}>
                 <Form.Check type="checkbox" label="Olives" 
                 checked={toppings.includes("Olives")}
                 onChange={ (e)=> addTopping(e,"Olives")}
+                id={"Olives"}
                 />
               </Col>
             </Row>
@@ -184,18 +214,21 @@ const Craft = () => {
                 <Form.Check type="checkbox" label="Pineapple" 
                 checked={toppings.includes("Pineapple")}
                 onChange={ (e)=> addTopping(e,"Pineapple")}
+                id={"Pineapple"}
                 />	
               </Col>
               <Col xs={4}>
                 <Form.Check type="checkbox" label="Spinach" 
                 checked={toppings.includes("Spinach")}
                 onChange={ (e)=> addTopping(e,"Spinach")}
+                id={"Spinach"}
                 />
               </Col>
               <Col xs={4}>
                 <Form.Check type="checkbox" label="Cheese" 
                 checked={toppings.includes("Cheese")}
                 onChange={ (e)=> addTopping(e,"Cheese")}
+                id={"Cheese"}
                 />
               </Col>
             </Row>

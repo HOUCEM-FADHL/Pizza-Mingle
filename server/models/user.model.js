@@ -6,69 +6,91 @@ const { isEmail } = require("validator");
 
 // Define the schema for the User model
 const UserSchema = new mongoose.Schema(
-    {
-        firstName: {
-        type: String,
-        required: [true, "First name is required"],
-        },
-        lastName: {
-        type: String,
-        required: [true, "Last name is required"],
-        },
-        address: {
-            type: String,
-            required: [true, "Adress is required"],
-        },
-        city: {
-            type: String,
-            required: [true, "City is required"],
-        },
-        state : {
-            type: String,
-            enum : ["State 1", "State 2"],
-            required: [true, "State is required"],
-        },
-        email: {
-        type: String,
-        required: [true, "Email is required"],
-        unique: true,
-        validate: [isEmail, "Please provide a valid email address"],
-        },
-        password: {
-        type: String,
-        required: [true, "Password is required"],
-        minlength: [8, "Password must be at least 8 characters"],
-        },
-        orderNum : {
-            type: Number,
-            default: 0
-        }
+  {
+    firstName: {
+      type: String,
+      required: [true, "First name is required"],
     },
-    { timestamps: true }
-    );
+    lastName: {
+      type: String,
+      required: [true, "Last name is required"],
+    },
+    address: {
+      type: String,
+      required: [true, "Adress is required"],
+    },
+    city: {
+      type: String,
+      required: [true, "City is required"],
+    },
+    state: {
+      type: String,
+      enum: [
+        "Tunis",
+        "Ariana",
+        "Ben Arous",
+        "Manouba",
+        "Nabeul",
+        "Zaghouan",
+        "Bizerte",
+        "Béja",
+        "Jendouba",
+        "Kef",
+        "Siliana",
+        "Kairouan",
+        "Kasserine",
+        "Sidi Bouzid",
+        "Sousse",
+        "Mahdia",
+        "Monastir",
+        "Gabès",
+        "Médenine",
+        "Tataouine",
+        "Gafsa",
+        "Tozeur",
+        "Kebili",
+      ],
+      required: [true, "State is required"],
+    },
+    email: {
+      type: String,
+      required: [true, "Email is required"],
+      unique: true,
+      validate: [isEmail, "Please provide a valid email address"],
+    },
+    password: {
+      type: String,
+      required: [true, "Password is required"],
+      minlength: [8, "Password must be at least 8 characters"],
+    },
+    orderNum: {
+      type: Number,
+      default: 0,
+    },
+  },
+  { timestamps: true }
+);
 
- 
+UserSchema.virtual("confirmPassword")
+  .get(() => this.confirmPassword)
+  .set((value) => {
+    this.confirmPassword = value;
+  });
 
-        UserSchema.virtual("confirmPassword")
-        .get(() => this.confirmPassword)
-        .set((value) => {this.confirmPassword = value;});
-    
-UserSchema.pre('validate', function(next){
-    if(this.password !== this.confirmPassword){
-        this.invalidate('confirmPassword', 'Passwords dont match')
-    }
-    next();
-})
-
-// this should go after 
-UserSchema.pre('save', function (next) {
-    bcrypt.hash(this.password, 10)
-        .then(hash => {
-            this.password = hash;
-            next();
-        });
+UserSchema.pre("validate", function (next) {
+  if (this.password !== this.confirmPassword) {
+    this.invalidate("confirmPassword", "Passwords dont match");
+  }
+  next();
 });
 
+// this should go after
+UserSchema.pre("save", function (next) {
+  bcrypt.hash(this.password, 10).then((hash) => {
+    this.password = hash;
+    next();
+  });
+});
 
 // Create the User model using the defined schema
 const User = mongoose.model("User", UserSchema);
