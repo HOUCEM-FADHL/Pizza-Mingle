@@ -28,3 +28,14 @@ Welcome to our Pizza Mingle Web App! This React-based application allows users t
 **Note:** Ensure that both the front-end and back-end servers are running for full functionality. The back-end API is assumed to be hosted at `http://localhost:8000`, as indicated in the code.
 
 Feel free to explore and enjoy our pizza ordering experience!
+
+## Contact
+
+For any questions, feedback, or issues, feel free to reach out:
+
+- Email: [Houcem.Fadhl@gmail.com](mailto:Houcem.Fadhl@gmail.com)
+- GitHub: [HOUCEM-FADHL](https://github.com/HOUCEM-FADHL)
+
+## License
+
+This project is licensed under the MIT License.
