@@ -1,5 +1,5 @@
 # Pizza Ordering Web App
-Welcome to our Pizza Ordering Web App! This React-based application allows users to customize and order pizzas with ease. Whether you want to craft your own pizza, reorder your favorite, or be surprised by our chef's creation, we've got you covered.
+Welcome to our Pizza Mingle Web App! This React-based application allows users to customize and order pizzas with ease. Whether you want to craft your own pizza, reorder your favorite, or be surprised by our chef's creation, we've got you covered.
 
 ## Features:
 
