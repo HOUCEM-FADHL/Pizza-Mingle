@@ -12,10 +12,18 @@ Welcome to our Pizza Mingle Web App! This React-based application allows users t
 
 ## Technologies Used:
 
-- React
-- React Router
-- React Bootstrap
-- Axios
+### Frontend
+
+-	React: The front-end is built using React for a dynamic and interactive user interface.
+-	React Router: Used for handling navigation within the application.
+-	React Bootstrap: Utilized for responsive and visually appealing UI components.
+-	Axios: Used for making HTTP requests to the server.
+
+### Backend
+
+- Node.js and Express for the server.
+- MongoDB as the database for storing project and client data.
+- Authentication using JSON Web Tokens (JWT).
 
 ## How to Run:
 
